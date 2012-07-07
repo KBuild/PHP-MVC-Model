@@ -1,4 +1,4 @@
-<?php if(!defined('PATH')) exit('Path error');
+<?php
 /* Author : KBuild
  * Email : qwer7995@gmail.com
  */
