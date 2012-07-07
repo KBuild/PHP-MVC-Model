@@ -2,9 +2,7 @@
 /* Author : KBuild
  * Email : qwer7995@gmail.com
  */
-
-interface DB {
-	const host = 'localhost';
-	const user = 'root';
-	const passwd = 'imsqlroot';
-}
+	$db['host'] = 'localhost';
+	$db['user'] = 'root';
+	$db['passwd'] = 'imsqlroot';
+?>

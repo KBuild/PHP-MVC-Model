@@ -2,8 +2,8 @@
 /* Author : KBuild
  * Email : qwer7995@gmail.com
  */
-require(PATH.'/lib/view.php');
-class PostView extends View
-{
-}
+require_once('lib/view.php');
+$view->heading();
 ?>
+<h1>Hello <?= ACTION ?></h1>
+<? $view->closing(); ?>

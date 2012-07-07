@@ -2,20 +2,20 @@
 /* Author : KBuild
  * Email : qwer7995@gmail.com
  */
-require(PATH.'/lib/html.php');
+require_once('lib/html.php');
 class View
 {
-	$html = new HTML();
-	function callView($name)
+	function heading()
 	{
-
+		head_open();
+		js_tag(APP_NAME.'js/'.CONTROLLER.'/'.ACTION.'.js');
+		css_tag(APP_NAME.'css/'.CONTROLLER.'/'.ACTION.'.css');
+		head_close();
 	}
-	function heading($name)
+	function closing()
 	{
-		$this->html->head_open();
-		$this->html->js_tag(APP_PATH.'/js/'.$name.'.js');
-		$this->html->css_tag(APP_PATH.'/css/'.$name.'.css');
-		$this->html->head_close();
+		html_close();
 	}
 }
+$view = new View();
 ?>

@@ -4,37 +4,36 @@
  */
 Class Controller
 {
-	$name = string;
+	var $name = null;
 
 	/* rendering view directly */
-	function render($view_name)
+	final function render($view_name)
 	{
-		$view = PATH.'/app/view/'.$this->name.'/'.$view_name.'.php';
-		include($view);
-		call_user_func(callView, $this->name);
+		$view = 'app/view/'.$this->name.'/'.$view_name.EXT;
+		include_once($view);
 	}
 
 	/* find date from model */
-	function find($model_name, $parameter)
+	final function find($model_name, $parameter)
 	{
-		$model = PATH.'/app/model/'.$model_name;
-		include($model);
+		$model = 'app/model/'.$model_name;
+		include_once($model);
 		call_user_func(find, $parameter);
 	}
 
 	/* update date from model */
-	function update($model_name, $parameter)
+	final function update($model_name, $parameter)
 	{
-		$model = PATH.'/app/model/'.$model_name;
-		include($model);
+		$model = 'app/model/'.$model_name;
+		include_once($model);
 		call_user_func(update, $parameter);
 	}
 
 	/* insert date into model */
-	function insert($model_name, $parameter)
+	final function insert($model_name, $parameter)
 	{
-		$model = PATH.'/app/model/'.$model_name;
-		include($model);
+		$model = 'app/model/'.$model_name;
+		include_once($model);
 		call_user_func(insert, $parameter);
 	}
 }
