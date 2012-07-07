@@ -3,7 +3,8 @@
  * Email : qwer7995@gmail.com
  */
 define(PATH, dirname(__FILE__));
-echo strtr($_SERVER['SCRIPT_NAME'], basename(__FILE__), null);// get string of app folder
+$s = preg_split('/(\/index.php)/',$_SERVER['SCRIPT_NAME']);
+define(APP_NAME, $s[0]);
 require('lib/route.php');
 Route::routing($_SERVER['PHP_SELF']);
 ?>
