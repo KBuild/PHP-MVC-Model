@@ -1,5 +1,4 @@
 <?php
-//ini_set('display_errors', 'On');
 /* Author : KBuild
  * Email : qwer7995@gmail.com
  */
