@@ -4,6 +4,9 @@
  */
 class Post extends Model
 {
-	$this->name='post';
+	Post()
+	{
+		$this->name='post';
+	}
 }
 ?>
