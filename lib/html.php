@@ -19,6 +19,7 @@ function head_close()
 function html_close()
 {
 ?>
+</body>
 </html>
 <?
 }

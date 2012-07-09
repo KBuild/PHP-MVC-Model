@@ -4,11 +4,11 @@
  */
 require_once 'conf/route.php';
 
-if(empty($_SERVER['PHP_SELF']))
+if(empty($_SERVER['PHP_SELF'])) // set default route if has not $_SERVER['PHP_SELF']
 {
-	$sp = preg_split('/\//',$route['default']);
-	define(CONTROLLER, $sp[0]);
-	define(ACTION, $sp[1]);
+	$default = preg_split('/\//',$route['default']);
+	define(CONTROLLER, strtolower($default[0]));
+	define(ACTION, strtolower($default[1]));
 }
 else
 {
@@ -17,16 +17,23 @@ else
 	{
 		$parameter[2] = 'index'; // set default action : index
 	}
-	define(CONTROLLER, $parameter[1]);
-	define(ACTION, $parameter[2]);
+	if(isset($route[$parameter[1]][$parameter[2]]))
+	{
+		$proxy = preg_split('/\//', $route[$parameter[1]][$parameter[2]]);
+		$parameter[1] = $proxy[0];
+		$parameter[2] = $proxy[1];
+	}
+	define(CONTROLLER, strtolower($parameter[1]));
+	define(ACTION, strtolower($parameter[2]));
 }
 
-$controller = strtolower(CONTROLLER).'Controller'; // set controller uri
+$controller = ucfirst(CONTROLLER).'Controller'; // set controller uri
 
-require_once 'lib/controller.php';
-require_once 'app/controller/'.$controller.EXT;
-
-/* Error routine start */
+if($parameter[2] == $controller)
+{
+	echo 'URL Error<br />Invalid URL';
+	exit;
+}
 
 if(empty($parameter[2]))
 {
@@ -36,17 +43,20 @@ if(empty($parameter[2]))
 /* if controller doesn`t exist print error and exit */
 if(!file_exists('app/controller/'.$controller.EXT))
 {
-	header('Location: /404.html');
+	echo 'File Error<br />';
+	echo $controller . ' not found';
 	exit();
 }
+
+require_once 'lib/controller.php';
+require_once 'app/controller/'.$controller.EXT;
 
 if(!method_exists($controller, ACTION))
 {
-	header('Location: /404.html');
+	echo 'Action Error<br />';
+	echo '"' . ACTION . '" action has not found';
 	exit();
 }
-
-/* End */
 
 $ctr = new $controller;
 $ctr->{ACTION}();

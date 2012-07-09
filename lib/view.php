@@ -5,9 +5,9 @@
 require_once('lib/html.php');
 class View
 {
-	function heading()
+	function heading($title)
 	{
-		head_open();
+		head_open($title);
 		js_tag(APP_NAME.'js/'.CONTROLLER.'/'.ACTION.'.js');
 		css_tag(APP_NAME.'css/'.CONTROLLER.'/'.ACTION.'.css');
 		head_close();
