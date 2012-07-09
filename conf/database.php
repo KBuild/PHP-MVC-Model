@@ -5,4 +5,5 @@
 	$db['host'] = 'localhost';
 	$db['user'] = 'root';
 	$db['passwd'] = 'imsqlroot';
+	$db['dbname'] = 'mvc';
 ?>
