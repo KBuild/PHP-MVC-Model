@@ -15,4 +15,5 @@
 
 	$route['default'] = 'post/index';
 	$route['post']['test2'] = 'post/test';
+	$route['post']['N'] = 'post/show';
 ?>
