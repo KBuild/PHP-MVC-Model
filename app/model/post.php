@@ -4,9 +4,13 @@
  */
 class Post extends Model
 {
-	Post()
+	function __construct()
 	{
-		$this->name='post';
+		$this->name = 'post';
+		$this->column = array(
+			'title' => 'string',
+			'body' => 'text'
+		);
 	}
 }
 ?>

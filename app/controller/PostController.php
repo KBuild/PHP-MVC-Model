@@ -14,12 +14,27 @@ class PostController extends Controller
 	function index()
 	{
 		$title = 'Hello MVC!';
-		$this->render('index', array('title' => $title, 'Var' => '3'));
+		$this->render(array('title' => $title, 'Var' => '3'));
 	}
 
 	function test()
 	{
 		echo 'test';
+	}
+
+	function show($id)
+	{
+		$post = $this->findById(
+			array(
+				'id' => $id
+			)
+		);
+		$this->render(
+			array(
+				'title' => 'Show posts',
+				'post' => $post
+			)
+		);			
 	}
 }
 ?>
