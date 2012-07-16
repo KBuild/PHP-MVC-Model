@@ -1,0 +1,10 @@
+<?php if(!defined('PATH')) exit('Path error');
+$view->heading();
+?>
+
+<!-- html code in here -->
+<h1>Hello World!</h1>
+
+<?
+$view->closing();
+?>

@@ -1,0 +1,10 @@
+<?php if(!defined('PATH')) exit('Path error');
+class __cNAME__ extends Model
+{
+	function __cNAME__()
+	{
+		$this->name = __lNAME__;
+		$this->column = __ARRAY__;
+	}
+}
+?>

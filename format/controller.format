@@ -1,0 +1,13 @@
+<?php if(!defined('PATH')) exit('Path error');
+class __cNAME__Controller extends Controller
+{
+	function __cNAME__Controller()
+	{
+		$this->name = '__lNAME__';
+	}
+	function index()
+	{
+		echo 'Hello World';
+	}
+}
+?>
