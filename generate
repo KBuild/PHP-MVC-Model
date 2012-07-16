@@ -74,7 +74,7 @@ function controller()
 	/* create folder */
 	if(!is_dir('app/view/'.$lowername))
 	{
-		if(mkdir('app/view/'.$lowername, 0644))
+		if(mkdir('app/view/'.$lowername, 0755))
 		{
 			/* print result */
 			echo "\033[0;32mcreate app/view/$lowername\r\n\033[0m";
@@ -82,7 +82,7 @@ function controller()
 	}
 	if(!is_dir('js/'.$lowername))
 	{
-		if(mkdir('js/'.$lowername, 0644))
+		if(mkdir('js/'.$lowername, 0755))
 		{
 			/* print result */
 			echo "\033[0;32mcreate js/$lowername\r\n\033[0m";
@@ -90,7 +90,7 @@ function controller()
 	}
 	if(!is_dir('css/'.$lowername))
 	{
-		if(mkdir('css/'.$lowername, 0644))
+		if(mkdir('css/'.$lowername, 0755))
 		{
 			/* print result */
 			echo "\033[0;32mcreate css/$lowername\r\n\033[0m";
@@ -179,7 +179,7 @@ function view()
 	$viewfolder = 'app/view/' . $argv[2];
 	if(!is_dir($viewfolder))
 	{
-		if(mkdir($viewfolder, 0644))
+		if(mkdir($viewfolder, 0755))
 		{
 			echo "\033[0;32mcreate $viewfolder\r\n\033[0m";
 		}
