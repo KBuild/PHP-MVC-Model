@@ -35,3 +35,6 @@ _/css_ -> css files
 <br />
 <br />
 _/js_ -> javascript files
+<br />
+<br />
+_/format_ -> format files for generate script
