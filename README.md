@@ -4,16 +4,18 @@
 <br />
 _/app_
 <br />
- -/controller
+ -/controller -> app controller
 <br />
- -/model
+ -/model -> app model
 <br />
- -/view
+ -/view -> view model
 <br />
 <br />
 _/conf_ -> configure
 <br />
  -database.php -> infomation of database
+<br />
+ -route.php -> information of routing rules
 <br />
 <br />
 _/lib_ -> library
