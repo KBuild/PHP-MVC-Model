@@ -2,6 +2,10 @@
 /* Author : KBuild
  * Email : qwer7995@gmail.com
  */
+
+require_once('lib/model.php');
+require_once('lib/view.php');
+
 Class Controller
 {
 	var $name = null;
@@ -13,37 +17,47 @@ Class Controller
 	 *  $parameter : data for view(array)
 	 *
 	 */
-	final function render($view_name, $parameter)
+	final function render($parameter)
 	{
-		include_once('lib/view.php');
+		global $view;
 		$view->heading($parameter['title']);
-		$appview = 'app/view/'.$this->name.'/'.$view_name.EXT;
+		$appview = 'app/view/' . $this->name . '/' . ACTION . EXT;
 		include_once($appview);
 		$view->closing();
 	}
 
 	/* find date from model */
-	final function find($model_name, $parameter)
+	final function find($parameter)
 	{
-		$appmodel = 'app/model/'.$model_name;
+		$appmodel = 'app/model/' . $this->name . EXT;
 		include_once($appmodel);
-		call_user_func(find, $parameter);
+		return call_user_func($paramter['model_name']->find, $parameter);
+	}
+
+	final function findById($parameter)
+	{
+		$appmodel = 'app/model/' . $this->name . EXT;
+		include_once($appmodel);
+		$model_name = ucfirst($this->name);
+		$model = new $model_name();
+		return $model->findById($parameter);
+		//return call_user_func($model_name->findById, $parameter);
 	}
 
 	/* update date from model */
-	final function update($model_name, $parameter)
+	final function update($parameter)
 	{
-		$appmodel = 'app/model/'.$model_name;
+		$appmodel = 'app/model/' . $this->name . EXT;
 		include_once($appmodel);
-		call_user_func(update, $parameter);
+		return call_user_func($model_name->update, $parameter);
 	}
 
 	/* insert date into model */
-	final function insert($model_name, $parameter)
+	final function insert($parameter)
 	{
-		$appmodel = 'app/model/'.$model_name;
+		$appmodel = 'app/model/' . $this->name . EXT;
 		include_once($appmodel);
-		call_user_func(insert, $parameter);
+		return call_user_func($model_name->insert, $parameter);
 	}
 }
 ?>

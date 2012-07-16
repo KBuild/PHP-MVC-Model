@@ -1,4 +1,4 @@
-<?php
+<?
 function head_open($title=null)
 {
 ?>
@@ -56,11 +56,11 @@ function input_tag($type='text', $column_name, $form=null)
 <input type="<?=$type?>" id="<?=$column_name?>" name="<?=$column_name?>" <?=$frm?>/>
 <?
 }
-function form_tag_open($url, $method)
+function form_tag_open($url, $method, $css=null)
 {
 ?>
-<form action="<?=$url?>" method="<?=$method?>" >
-<?
+<form action="<?=$url?>" method="<?=$method?>"
+<? if(isset($css)) { ?> class="<?=$css?>" > <? }
 }
 function form_tag_close()
 {
@@ -84,11 +84,20 @@ function label_tag($column_name, $content)
 </label>
 <?
 }
-function table_print($row=1, $col=1, $content=array())
+function table_print($row=1, $col=1, $content=array(), $css=null)
+{
+if(isset($css))
+{
+?>
+<table class="<?=$css?>" >
+<?
+}
+else
 {
 ?>
 <table>
 <?
+}
 	for($i = 0 ; $i < $row ; $i++)
 	{
 	?><tr><?
@@ -103,6 +112,7 @@ function table_print($row=1, $col=1, $content=array())
 	?></tr><?
 	}
 ?>
+
 </table>
 <?
 }
