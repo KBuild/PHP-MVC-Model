@@ -1,0 +1,259 @@
+#!/usr/bin/php
+<?php
+// author : KBuild
+// email : qwer7995@gmail.com
+
+if(PHP_SAPI !== 'cli') exit('This script works at PHP CLI');
+
+ini_set('error_reporting', E_ALL ^ E_NOTICE);
+define(PATH, dirname(__FILE__));
+$filename = basename(__FILE__);
+
+format_check();
+
+if($argc < 2)
+{
+	usage();
+	exit;
+}
+
+$argv[1]();
+
+function format_check()
+{
+	if(!file_exists('format'))
+	{
+		exit("\033[0;31mFile Error. Folder not exists\r\n\033[0m");
+	}
+	else if(!file_exists('format/view.format') || !file_exists('format/model.format') || !file_exists('format/controller.format'))
+	{
+		exit("\033[0;31mFile Error. Format file not exists\r\n\033[0m");
+	}
+}
+
+function replacing($appname, $format)
+{
+	$pattern = array('/__lNAME__/', '/__cNAME__/');
+	$replace = array(strtolower($appname), ucfirst($appname));
+	return preg_replace($pattern, $replace, $format);
+}
+
+function controller()
+{
+	global $argc;
+	global $argv;
+	if($argc < 3)
+	{
+		global $filename;
+		exit('usage : '.$filename.' controller NAME'."\r\n");
+	}
+	$argnum = (int)$argv[2]; // if $argv[2] is text, $argnum will be integer
+	$str = $argv[2]; // just string. if $argv[2] is integer, $str is same as $argnum
+	if($str == (string)$argnum)
+	{
+		exit("\033[0;31mType Error. Controller must be string.\r\n\033[0m");
+	}
+	$lowername = strtolower($str);
+	$capname = ucfirst($str);
+	$f = fopen('format/controller.format', 'r');
+	if(!$f) exit("\033[0;31mFile Error. Has no read permission.\r\n\033[0m");
+	$format = fread($f, filesize('format/controller.format'));
+	$data = replacing($str, $format);
+	$appname = 'app/controller/'.$capname.'Controller.php';
+	fclose($f);
+
+	/* create file */
+	$newf = fopen($appname, 'w');
+	if(!$newf) exit("\033[0;31mFile Error. Has no write permission.\r\n\033[0m");
+	fwrite($newf, $data);
+	fclose($newf);
+
+	/* print result */
+	echo "\033[0;32mcreate $appname\r\n\033[0m";
+
+	/* create folder */
+	if(!is_dir('app/view/'.$lowername))
+	{
+		if(mkdir('app/view/'.$lowername, 0644))
+		{
+			/* print result */
+			echo "\033[0;32mcreate app/view/$lowername\r\n\033[0m";
+		}
+	}
+	if(!is_dir('js/'.$lowername))
+	{
+		if(mkdir('js/'.$lowername, 0644))
+		{
+			/* print result */
+			echo "\033[0;32mcreate js/$lowername\r\n\033[0m";
+		}
+	}
+	if(!is_dir('css/'.$lowername))
+	{
+		if(mkdir('css/'.$lowername, 0644))
+		{
+			/* print result */
+			echo "\033[0;32mcreate css/$lowername\r\n\033[0m";
+		}
+	}
+}
+
+function model()
+{
+	global $argc;
+	global $argv;
+	if($argc < 5)
+	{
+		global $filename;
+		exit('usage : '.$filename.' model MODEL_NAME [column_name column_Type [...]]' . "\r\n");
+	}
+	$pattern = '/string|integer|smalltext|text|bigtext|timestamp/';
+	$string = 'array('."\r\n";
+	for($i = 3 ; $i < $argc ; $i += 2)
+	{
+		$column = $argv[$i];
+		$type = $argv[$i+1];
+		if(preg_match($pattern, $type) == 1)
+		{
+			$string .= "\t\t\t'" . $column . "' => '" . $type . "'";
+			if($argc - 2 != $i) $string .= ',';
+			$string .= "\r\n";
+			continue;
+		}
+		else
+		{
+			exit("\033[0;31mColumn Error. Unknown column type.\r\n\033[0m");
+			break;
+		}
+	}
+	$string .= "\t\t)";
+
+	/* file read */
+	$f = fopen('format/model.format', 'r');
+	if(!$f) exit("\033[0;31mFile Error. Has no read permission.\r\n\033[0m");
+	$format = fread($f, filesize('format/model.format'));
+	fclose($f);
+
+	/* check file */
+	$modelname = 'app/model/' . $argv[2] . '.php';
+	if(file_exists($modelname))
+	{
+		exit("\033[0;31mFile Error. File exists.\r\n\033[0m");
+	}
+
+	$data = replacing($argv[2], $format);
+	$data = preg_replace('/__ARRAY__/', $string, $data);
+
+	/* make model */
+	$newf = fopen($modelname, 'w');
+	if(!$newf) exit("\033[0;31mFile Error. Has no write permission.\r\n\033[0m");
+	fwrite($newf, $data);
+	echo "\033[0;32mcreate $modelname\r\n\033[0m";
+	fclose($newf);
+}
+
+function view()
+{
+	global $argc;
+	global $argv;
+	if($argc < 4)
+	{
+		global $filename;
+		exit('usage : '.$filename.' view CONTROLLER_NAME VIEW_NAME'."\r\n");
+	}
+
+	/* Make string from format */
+	$f = fopen('format/view.format', 'r');
+	if(!$f) exit("\033[0;31mFile Error. Has no read permission.\r\n\033[0m");
+	$format = fread($f, filesize('format/view.format'));
+	$data = replacing($argv[3], $format);
+	fclose($f);
+
+	$viewname = 'app/view/' . $argv[2] . '/' . $argv[3] . '.php';
+	if(file_exists($viewname))
+	{
+		exit("\033[0;31mFile Error. File exists.\r\n\033[0m");
+	}
+
+	/* Check and create folder */
+	$viewfolder = 'app/view/' . $argv[2];
+	if(!is_dir($viewfolder))
+	{
+		if(mkdir($viewfolder, 0644))
+		{
+			echo "\033[0;32mcreate $viewfolder\r\n\033[0m";
+		}
+	}
+
+	/* create new file*/
+	$newf = fopen($viewname, 'w');
+	if(!$newf) exit("\033[0;31mFile Error. Has no write permission.\r\n\033[0m");
+	fwrite($newf, $data);
+	echo "\033[0;32mcreate $viewname\r\n\033[0m";
+	fclose($newf);
+}
+
+function dbake()
+{
+	global $argc;
+	global $argv;
+	if($argc < 4)
+	{
+		global $filename;
+		exit('usage : '.$filename.' dbake NAME [create|drop]'."\r\n");
+	}
+	$modelfile = 'app/model/' . strtolower($argv[2]) . '.php';
+	if(!file_exists($modelfile))
+	{
+		exit("\033[0;31mFile Error. File not exists\r\n\033[0m");
+	}
+	switch($argv[3])
+	{
+		case 'create' :
+			$method = 'create_table';
+			break;
+		case 'drop' :
+			$method = 'drop_table';
+			break;
+		default : 
+			exit('Unknown option' . "\r\n");
+			break;
+	}
+	$class = ucfirst($argv[2]);
+	include_once('lib/model.php');
+	include_once($modelfile);
+	$model = new $class();
+	$ret = $model->$method();
+	if($ret === 1)
+	{
+		echo "\033[0;32m Success execute query : $model \r\n\033[0m";
+	}
+	else
+	{
+		echo "\033[0;31m $ret \r\n\033[0m";
+	}
+}
+
+function destroy()
+{
+}
+
+function usage()
+{
+global $filename;
+echo 'usage : '.$filename.' [command] [parameter[...]]	
+
+command :
+
+	controller : create a controller form
+
+	model : create a model form
+
+	view : create a view form
+
+	dbake : controll table with model
+		 
+	usage : print usage
+';
+}
+?>
