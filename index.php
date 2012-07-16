@@ -2,7 +2,7 @@
 /* Author : KBuild
  * Email : qwer7995@gmail.com
  */
-$s = preg_split('/index.php/', $_SERVER['SCRIPT_NAME']);
+$s = preg_split('/'.basename(__FILE__).'/', $_SERVER['SCRIPT_NAME']);
 define(PATH, dirname(__FILE__));
 define(EXT, '.'.pathinfo(__FILE__, PATHINFO_EXTENSION));
 define(APP_NAME, $s[0]);
