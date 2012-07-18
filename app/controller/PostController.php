@@ -19,7 +19,16 @@ class PostController extends Controller
 
 	function test()
 	{
-		echo 'test';
+		echo 'test good';
+	}
+
+	function form()
+	{
+		$this->render(
+			array(
+				'title' => 'Input Form'
+			)
+		);
 	}
 
 	function show($id)
@@ -35,6 +44,16 @@ class PostController extends Controller
 				'post' => $post
 			)
 		);			
+	}
+
+	function save($data)
+	{
+		echo $this->insert(
+			array(
+				'title' => $data['title'],
+				'post' => $data['post']
+			)
+		);
 	}
 }
 ?>
