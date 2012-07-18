@@ -1,119 +1,119 @@
 <?
 function head_open($title=null)
 {
-?>
+$char = ini_get('default_charset');
+echo $html=<<<HTML
 <!DOCTYPE html>
 <html>
 <head>
-<title><?=$title?></title>
-<meta http-equiv="Content-Type" charset="UTF-8" />
-<?
+<title>$title</title>
+<meta charset="$char" />\n
+HTML;
 }
 function head_close()
 {
-?>
+echo $html=<<<HTML
 </head>
-<body>
-<?
+<body>\n
+HTML;
 }
 function html_close()
 {
-?>
+echo $html=<<<HTML
 </body>
 </html>
-<?
+HTML;
 }
 function css_tag($css_url)
 {
-?>
-<link rel="stylesheet" type="text/css" href="<?=$css_url?>" />
-<?
+echo $html=<<<HTML
+<link rel="stylesheet" type="text/css" href="$css_url" />\n
+HTML;
 }
 function js_tag($js_url)
 {
-?>
-<script type="text/javascript" src="<?=$js_url?>"></script>
-<?
+echo $html=<<<HTML
+<script type="text/javascript" src="$js_url"></script>\n
+HTML;
 }
 function tail()
 {
-?>
+echo $html=<<<HTML
 </body>
-</html>
-<?
+</html>\n
+HTML;
 }
-function input_tag($type='text', $column_name, $form=null)
+function input_tag($column_name, $type='text', $option=null)
 {
-	if(isset($form))
-	{
-	    $frm = 'form="' . $form . '"';
-	}
-	else
-	{
-	    $frm = null;
-	}
-?>
-<input type="<?=$type?>" id="<?=$column_name?>" name="<?=$column_name?>" <?=$frm?>/>
-<?
+echo $html=<<<HTML
+<input type="$type" id="$column_name" name="$column_name"
+HTML;
+echo tag_option($option) . " />\n";
 }
-function form_tag_open($url, $method, $css=null)
+function submit_tag($text=null, $option=null)
 {
-?>
-<form action="<?=$url?>" method="<?=$method?>"
-<? if(isset($css)) { ?> class="<?=$css?>" > <? }
+echo $html=<<<HTML
+<input type="submit" value="$text"
+HTML;
+echo tag_option($option) . " />\n";
+}
+function form_tag_open($url, $type, $option=null)
+{
+echo $html=<<<HTML
+<form action="$url" method="$type"
+HTML;
+echo tag_option($option) . ">\n";
 }
 function form_tag_close()
 {
-?>
-</form>
-<?
+echo $html=<<<HTML
+</form>\n
+HTML;
 }
-function br_tag()
+function label_tag($column_name, $content=null, $option=null)
 {
-?>
-<br />
-<?
+if($content == NULL)
+{
+	$content = ucfirst($column_name) . ' : ';
 }
-function label_tag($column_name, $content)
-{
-?>
-<label for="<?=$column_name?>">
-<?
-	echo $content;
-?>
-</label>
-<?
+echo $html=<<<HTML
+<label for="$column_name"
+HTML;
+	echo tag_option($option) . ">$content";
+echo $html=<<<HTML
+</label>\n
+HTML;
 }
-function table_print($row=1, $col=1, $content=array(), $css=null)
+function table_print($row=1, $col=1, $content=array(), $option=null)
 {
-if(isset($css))
-{
-?>
-<table class="<?=$css?>" >
-<?
-}
-else
-{
-?>
-<table>
-<?
-}
+echo '<table' . tag_option($option) . '>';
 	for($i = 0 ; $i < $row ; $i++)
 	{
-	?><tr><?
+	echo '<tr>';
 		for($j = 0 ; $j < $col ; $j++)
 		{
 		    if(!isset($content[$i * $col + $j]))
 		    {
 			$content[$i * $col + $j] = ' ';
 		    }
-		?><td><?=$content[$i * $col + $j]?></td><?
+		echo '<td>' . $content[$i * $col + $j] . '</td>';
 		}
-	?></tr><?
+	echo '</tr>';
 	}
-?>
 
-</table>
-<?
+echo $html=<<<HTML
+</table>\n
+HTML;
+}
+
+function tag_option($option=null)
+{
+	if($option == null) return null;
+	$string = ' ';
+	foreach($option as $key => $val)
+	{
+	$string .= $key . '="'.$val.'" ';
+	}
+	return $string;
 }
 ?>

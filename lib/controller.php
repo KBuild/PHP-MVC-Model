@@ -31,7 +31,9 @@ Class Controller
 	{
 		$appmodel = 'app/model/' . $this->name . EXT;
 		include_once($appmodel);
-		return call_user_func($paramter['model_name']->find, $parameter);
+		$model_name = ucfirst($this->name);
+		$model = new $model_name();
+		return $model->find($parameter);
 	}
 
 	final function findById($parameter)
@@ -41,7 +43,15 @@ Class Controller
 		$model_name = ucfirst($this->name);
 		$model = new $model_name();
 		return $model->findById($parameter);
-		//return call_user_func($model_name->findById, $parameter);
+	}
+
+	final function findAll($parameter)
+	{
+		$appmodel = 'app/model/' . $this->name . EXT;
+		include_once($appmodel);
+		$model_name = ucfirst($this->name);
+		$model = new $model_name();
+		return $model->findAll($parameter);
 	}
 
 	/* update date from model */
@@ -49,7 +59,11 @@ Class Controller
 	{
 		$appmodel = 'app/model/' . $this->name . EXT;
 		include_once($appmodel);
-		return call_user_func($model_name->update, $parameter);
+		$model_name = ucfirst($this->name);
+		$model = new $model_name();
+		$id = $parameter['id'];
+		unset($parameter['id']);
+		return $model->update(array('id' => $id, 'col' => $parameter));
 	}
 
 	/* insert date into model */
@@ -57,7 +71,9 @@ Class Controller
 	{
 		$appmodel = 'app/model/' . $this->name . EXT;
 		include_once($appmodel);
-		return call_user_func($model_name->insert, $parameter);
+		$model_name = ucfirst($this->name);
+		$model = new $model_name();
+		return $model->insert(array('col' => $parameter));
 	}
 }
 ?>

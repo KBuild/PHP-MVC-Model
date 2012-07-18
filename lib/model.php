@@ -143,7 +143,7 @@ class Model
 	/* save data into database */
 	function insert($data)
 	{
-		$parameter = array('type' => 'write', 'tblname' => $data['name']);
+		$parameter = array('type' => 'write', 'tblname' => $this->name);
 		$parameter = array_merge($parameter, array('col' => $data['col']));
 		return $this->query($parameter);
 	}

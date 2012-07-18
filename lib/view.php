@@ -3,6 +3,7 @@
  * Email : qwer7995@gmail.com
  */
 require_once('lib/html.php');
+
 class View
 {
 	function heading($title = null)
