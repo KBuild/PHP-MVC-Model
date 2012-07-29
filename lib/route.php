@@ -54,17 +54,21 @@ else
 		}
 	}
 
-	if(isset($route[$parameter[1]]) && $parameter[2] == NULL)
+	if(!empty($route[$parameter[1]]) && $parameter[2] == NULL)
 	{
 		$newuri = preg_split('/\//', $route[$parameter[1]]);
 	}
-	else if(isset($route[$parameter[1]][$parameter[2]]))
+	else if(!empty($route[$parameter[1]][$parameter[2]]))
 	{
 		$newuri = preg_split('/\//', $route[$parameter[1]][$parameter[2]]);
 	}
-	$parameter[1] = $newuri[0];
-	$parameter[2] = $newuri[1];
-	
+
+	if(!empty($newuri))
+	{
+		$parameter[1] = $newuri[0];
+		$parameter[2] = $newuri[1];
+	}
+
 	if(empty($parameter[2]))
 	{
 		$parameter[2] = 'index'; // set default action : index
